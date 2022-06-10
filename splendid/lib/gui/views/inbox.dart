@@ -1,6 +1,4 @@
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/src/foundation/key.dart';
-import 'package:flutter/src/widgets/framework.dart';
 
 class Inbox extends StatefulWidget {
   const Inbox({Key? key}) : super(key: key);
@@ -12,6 +10,17 @@ class Inbox extends StatefulWidget {
 class _InboxState extends State<Inbox> {
   @override
   Widget build(BuildContext context) {
-    return const Text("Inbox");
+    return Row(
+      children: [
+        Banner(
+          message: "message",
+          location: BannerLocation.topStart,
+          child: Image.network(
+            "assets/images/random.jpg",
+            width: 100,
+          ),
+        )
+      ],
+    );
   }
 }

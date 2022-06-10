@@ -49,7 +49,6 @@ class _HomeState extends ConsumerState<Home> {
   }
 
   var isCollapsed = false;
-  var _currentIndex = 0;
 
   @override
   Widget build(BuildContext context) {
@@ -57,61 +56,68 @@ class _HomeState extends ConsumerState<Home> {
     final pages = ref.watch(pagesProvider);
     return Scaffold(
       body: pages[selectedItem.index],
-      bottomNavigationBar: NavigationBarTheme(
-        data: NavigationBarThemeData(
-          indicatorColor: Colors.white.withOpacity(0.5),
-          labelTextStyle: MaterialStateProperty.all(
-            const TextStyle(fontSize: 12, fontWeight: FontWeight.bold),
-          ),
-        ),
-        child: NavigationBar(
-          animationDuration: const Duration(seconds: 1),
-          labelBehavior: NavigationDestinationLabelBehavior.alwaysHide,
-          height: 60,
-          selectedIndex: _currentIndex,
-          onDestinationSelected: (index) => {
-            ref
-                .read(navigationProvider.notifier)
-                .update((state) => state = NavBarItem.values.elementAt(index))
-          },
-          destinations: const [
-            NavigationDestination(
-              icon: Icon(Icons.menu),
-              label: "Menu",
-              tooltip: "",
+      appBar: AppBar(
+        actions: [
+          SizedBox(
+            width: MediaQuery.of(context).size.width,
+            height: 40,
+            child: NavigationBarTheme(
+              data: NavigationBarThemeData(
+                indicatorColor: Colors.white.withOpacity(0.5),
+                labelTextStyle: MaterialStateProperty.all(
+                  const TextStyle(fontSize: 12, fontWeight: FontWeight.bold),
+                ),
+              ),
+              child: NavigationBar(
+                animationDuration: const Duration(seconds: 1),
+                labelBehavior: NavigationDestinationLabelBehavior.alwaysHide,
+                height: 60,
+                selectedIndex: selectedItem.index,
+                onDestinationSelected: (index) => {
+                  ref.read(navigationProvider.notifier).update(
+                      (state) => state = NavBarItem.values.elementAt(index))
+                },
+                destinations: const [
+                  NavigationDestination(
+                    icon: Icon(Icons.menu),
+                    label: "Menu",
+                    tooltip: "",
+                  ),
+                  NavigationDestination(
+                    icon: Icon(Icons.inbox),
+                    label: "Inbox",
+                    tooltip: "",
+                  ),
+                  NavigationDestination(
+                    icon: Icon(Icons.person_add),
+                    label: "Clients",
+                    tooltip: "",
+                  ),
+                  NavigationDestination(
+                    icon: Icon(Icons.person_outline),
+                    label: "Users",
+                    tooltip: "",
+                  ),
+                  NavigationDestination(
+                    icon: Icon(Icons.dashboard_customize_sharp),
+                    label: "Board",
+                    tooltip: "",
+                  ),
+                  NavigationDestination(
+                    icon: Icon(Icons.shield_outlined),
+                    label: "Administration",
+                    tooltip: "",
+                  ),
+                  NavigationDestination(
+                    icon: Icon(Icons.settings),
+                    label: "Settings",
+                    tooltip: "",
+                  )
+                ],
+              ),
             ),
-            NavigationDestination(
-              icon: Icon(Icons.inbox),
-              label: "Inbox",
-              tooltip: "",
-            ),
-            NavigationDestination(
-              icon: Icon(Icons.person_add),
-              label: "Clients",
-              tooltip: "",
-            ),
-            NavigationDestination(
-              icon: Icon(Icons.person_outline),
-              label: "Users",
-              tooltip: "",
-            ),
-            NavigationDestination(
-              icon: Icon(Icons.dashboard_customize_sharp),
-              label: "Board",
-              tooltip: "",
-            ),
-            NavigationDestination(
-              icon: Icon(Icons.shield_outlined),
-              label: "Administration",
-              tooltip: "",
-            ),
-            NavigationDestination(
-              icon: Icon(Icons.settings),
-              label: "Settings",
-              tooltip: "",
-            )
-          ],
-        ),
+          )
+        ],
       ),
     );
   }
