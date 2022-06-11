@@ -38,6 +38,8 @@ class _InboxState extends State<Inbox> {
                   crossAxisCount: 2,
                   crossAxisSpacing: 10.0,
                   mainAxisSpacing: 10.0,
+                  childAspectRatio: MediaQuery.of(context).size.width /
+                      (MediaQuery.of(context).size.height / 4),
                   children: List.generate(list.length, (index) => list[index])),
             ),
           )
