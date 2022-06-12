@@ -54,133 +54,144 @@ class _HomeState extends ConsumerState<Home> {
     ref.read(navigationProvider);
   }
 
-  var isCollapsed = false;
+  var isSidebarVisible = false;
 
   @override
   Widget build(BuildContext context) {
     final selectedItem = ref.watch(navigationProvider);
     final pages = ref.watch(pagesProvider);
     return Scaffold(
-      body: Row(children: [
-        Column(
-          children: [
-            SizedBox(
-              width: xOverflow,
-              height: MediaQuery.of(context).size.height,
-              child: RotatedBox(
-                quarterTurns: 1,
-                child: NavigationBar(
-                  animationDuration: const Duration(milliseconds: 100),
-                  labelBehavior: NavigationDestinationLabelBehavior.alwaysShow,
-                  selectedIndex: selectedItem.index,
-                  onDestinationSelected: (index) => {
-                    ref.read(navigationProvider.notifier).update(
-                        (state) => state = NavBarItem.values.elementAt(index))
-                  },
-                  destinations: const [
-                    RotatedBox(
-                      quarterTurns: 3,
-                      child: NavigationDestination(
-                        icon: Icon(Icons.space_dashboard),
-                        label: "Dashboard",
-                        tooltip: "",
+      body: Row(
+        children: [
+          Visibility(
+            visible: isSidebarVisible,
+            child: Column(
+              children: [
+                SizedBox(
+                  width: 80,
+                  height: MediaQuery.of(context).size.height,
+                  child: RotatedBox(
+                    quarterTurns: 1,
+                    child: NavigationBar(
+                      animationDuration: const Duration(milliseconds: 100),
+                      labelBehavior:
+                          NavigationDestinationLabelBehavior.alwaysShow,
+                      selectedIndex: selectedItem.index,
+                      onDestinationSelected: (index) => {
+                        ref.read(navigationProvider.notifier).update((state) =>
+                            state = NavBarItem.values.elementAt(index))
+                      },
+                      destinations: const [
+                        RotatedBox(
+                          quarterTurns: 3,
+                          child: NavigationDestination(
+                            icon: Icon(Icons.space_dashboard),
+                            label: "Dashboard",
+                            tooltip: "",
+                          ),
+                        ),
+                        RotatedBox(
+                          quarterTurns: 3,
+                          child: NavigationDestination(
+                            icon: Icon(Icons.inbox),
+                            label: "Inbox",
+                            tooltip: "",
+                          ),
+                        ),
+                        RotatedBox(
+                          quarterTurns: 3,
+                          child: NavigationDestination(
+                            icon: Icon(Icons.badge),
+                            label: "Clients",
+                            tooltip: "",
+                          ),
+                        ),
+                        RotatedBox(
+                          quarterTurns: 3,
+                          child: NavigationDestination(
+                            icon: Icon(Icons.supervised_user_circle),
+                            label: "Users",
+                            tooltip: "",
+                          ),
+                        ),
+                        RotatedBox(
+                          quarterTurns: 3,
+                          child: NavigationDestination(
+                            icon: Icon(Icons.task),
+                            label: "Tasks",
+                            tooltip: "",
+                          ),
+                        ),
+                        RotatedBox(
+                          quarterTurns: 3,
+                          child: NavigationDestination(
+                            icon: Icon(Icons.content_paste),
+                            label: "Board",
+                            tooltip: "",
+                          ),
+                        ),
+                        RotatedBox(
+                          quarterTurns: 3,
+                          child: NavigationDestination(
+                            icon: Icon(Icons.shield_outlined),
+                            label: "Admin",
+                            tooltip: "",
+                          ),
+                        ),
+                        RotatedBox(
+                          quarterTurns: 3,
+                          child: NavigationDestination(
+                            icon: Icon(Icons.settings),
+                            label: "Settings",
+                            tooltip: "",
+                          ),
+                        )
+                      ],
+                    ),
+                  ),
+                )
+              ],
+            ),
+          ),
+          Expanded(
+            flex: 1,
+            child: SizedBox(
+              child: Column(
+                children: [
+                  SizedBox(
+                    child: Padding(
+                      padding: const EdgeInsets.all(10.0),
+                      child: Row(
+                        children: [
+                          TextButton(
+                            onPressed: () => setState(() {
+                              isSidebarVisible = !isSidebarVisible;
+                            }),
+                            child: const Icon(Icons.vertical_split),
+                          ),
+                          const SizedBox(
+                            width: 10.0,
+                          ),
+                          Text(
+                            selectedItem.name.characters.first.toUpperCase() +
+                                selectedItem.name.substring(1),
+                            style: const TextStyle(fontSize: 18),
+                          )
+                        ],
                       ),
                     ),
-                    RotatedBox(
-                      quarterTurns: 3,
-                      child: NavigationDestination(
-                        icon: Icon(Icons.inbox),
-                        label: "Inbox",
-                        tooltip: "",
-                      ),
+                  ),
+                  Expanded(
+                    child: SizedBox(
+                      child: pages[selectedItem.index],
                     ),
-                    RotatedBox(
-                      quarterTurns: 3,
-                      child: NavigationDestination(
-                        icon: Icon(Icons.badge),
-                        label: "Clients",
-                        tooltip: "",
-                      ),
-                    ),
-                    RotatedBox(
-                      quarterTurns: 3,
-                      child: NavigationDestination(
-                        icon: Icon(Icons.supervised_user_circle),
-                        label: "Users",
-                        tooltip: "",
-                      ),
-                    ),
-                    RotatedBox(
-                      quarterTurns: 3,
-                      child: NavigationDestination(
-                        icon: Icon(Icons.task),
-                        label: "Tasks",
-                        tooltip: "",
-                      ),
-                    ),
-                    RotatedBox(
-                      quarterTurns: 3,
-                      child: NavigationDestination(
-                        icon: Icon(Icons.content_paste),
-                        label: "Board",
-                        tooltip: "",
-                      ),
-                    ),
-                    RotatedBox(
-                      quarterTurns: 3,
-                      child: NavigationDestination(
-                        icon: Icon(Icons.shield_outlined),
-                        label: "Admin",
-                        tooltip: "",
-                      ),
-                    ),
-                    RotatedBox(
-                      quarterTurns: 3,
-                      child: NavigationDestination(
-                        icon: Icon(Icons.settings),
-                        label: "Settings",
-                        tooltip: "",
-                      ),
-                    )
-                  ],
-                ),
-              ),
-            )
-          ],
-        ),
-        Column(
-          children: [
-            SizedBox(
-              width: MediaQuery.of(context).size.width - xOverflow,
-              height: yOverflow,
-              child: Padding(
-                padding: const EdgeInsets.all(10.0),
-                child: Row(
-                  children: [
-                    ElevatedButton(
-                      onPressed: () => {},
-                      child: const Icon(Icons.vertical_split),
-                    ),
-                    const SizedBox(
-                      width: 10.0,
-                    ),
-                    Text(
-                      selectedItem.name.characters.first.toUpperCase() +
-                          selectedItem.name.substring(1),
-                      style: const TextStyle(fontSize: 18),
-                    )
-                  ],
-                ),
+                  )
+                ],
               ),
             ),
-            SizedBox(
-              height: MediaQuery.of(context).size.height - yOverflow,
-              width: MediaQuery.of(context).size.width - xOverflow,
-              child: pages[selectedItem.index],
-            )
-          ],
-        )
-      ]),
+          )
+        ],
+      ),
     );
   }
 }

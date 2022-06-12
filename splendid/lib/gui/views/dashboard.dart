@@ -32,11 +32,12 @@ class _DashboardState extends State<Dashboard> {
         children: [
           Row(
             children: [
-              Image.network(
-                "https://source.unsplash.com/random/?pink",
-                width: MediaQuery.of(context).size.width - xOverflow,
-                height: 200,
-                fit: BoxFit.cover,
+              Expanded(
+                child: Image.network(
+                  "https://source.unsplash.com/random/?pink",
+                  height: 200,
+                  fit: BoxFit.cover,
+                ),
               )
             ],
           ),
