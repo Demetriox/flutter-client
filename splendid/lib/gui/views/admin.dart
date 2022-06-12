@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:settings_ui/settings_ui.dart';
 
-class Settings extends StatefulWidget {
-  const Settings({Key? key}) : super(key: key);
+class Admin extends StatefulWidget {
+  const Admin({Key? key}) : super(key: key);
 
   @override
-  State<Settings> createState() => _SettingsState();
+  State<Admin> createState() => _AdminState();
 }
 
-class _SettingsState extends State<Settings> {
+class _AdminState extends State<Admin> {
   @override
   Widget build(BuildContext context) {
     return Row(
@@ -34,14 +34,26 @@ class _SettingsState extends State<Settings> {
                   ),
                   sections: [
                     SettingsSection(
-                      title: const Text("General"),
+                      title: const Text("Administration"),
                       tiles: <SettingsTile>[
                         SettingsTile.navigation(
-                            leading: const Icon(Icons.palette),
-                            title: const Text("Appearence"),
+                            leading: const Icon(Icons.badge),
+                            title: const Text("Clients"),
+                            onPressed: (context) => {}),
+                        SettingsTile.navigation(
+                            leading: const Icon(Icons.supervised_user_circle),
+                            title: const Text("Users"),
+                            onPressed: (context) => {}),
+                        SettingsTile.navigation(
+                            leading: const Icon(Icons.task),
+                            title: const Text("Tasks"),
+                            onPressed: (context) => {}),
+                        SettingsTile.navigation(
+                            leading: const Icon(Icons.task),
+                            title: const Text("Tasks"),
                             onPressed: (context) => {}),
                       ],
-                    ),
+                    )
                   ],
                 ),
               ),

@@ -1,6 +1,5 @@
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/src/foundation/key.dart';
-import 'package:flutter/src/widgets/framework.dart';
+import 'package:flutter/material.dart';
+import 'package:splendid/gui/widgets/global/apppage.dart';
 
 class Users extends StatefulWidget {
   const Users({Key? key}) : super(key: key);
@@ -12,6 +11,6 @@ class Users extends StatefulWidget {
 class _UsersState extends State<Users> {
   @override
   Widget build(BuildContext context) {
-    return const Text("Users");
+    return const AppPage(content: Text("Users"));
   }
 }

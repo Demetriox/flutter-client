@@ -37,6 +37,7 @@ dependencies:
   flutter_native_splash: ^2.2.3
   flutter_dotenv: ^5.0.2
   flutter_riverpod: ^1.0.4
+  settings_ui: ^2.0.2
 
 dev_dependencies:
   flutter_test:

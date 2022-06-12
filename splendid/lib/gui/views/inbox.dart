@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/framework.dart';
+import 'package:splendid/gui/widgets/global/apppage.dart';
 
 class Inbox extends StatefulWidget {
   const Inbox({Key? key}) : super(key: key);
@@ -12,6 +13,6 @@ class Inbox extends StatefulWidget {
 class _InboxState extends State<Inbox> {
   @override
   Widget build(BuildContext context) {
-    return const Text("Inbox");
+    return const AppPage(content: Text("Inbox"));
   }
 }

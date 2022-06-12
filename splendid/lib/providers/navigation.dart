@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:splendid/gui/views/administration.dart';
+import 'package:splendid/gui/views/admin.dart';
 import 'package:splendid/gui/views/board.dart';
 import 'package:splendid/gui/views/clients.dart';
 import 'package:splendid/gui/views/dashboard.dart';
@@ -30,7 +30,7 @@ final pagesProvider = StateProvider<List<Widget>>(
     const Users(),
     const Tasks(),
     const Board(),
-    const Administration(),
+    const Admin(),
     const Settings(),
   ],
 );
