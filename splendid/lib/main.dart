@@ -27,7 +27,12 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'Sprint',
       theme: ThemeData(
-        primarySwatch: Colors.blue,
+        useMaterial3: true,
+        colorScheme: ColorScheme.fromSeed(
+          seedColor: Colors.red,
+          brightness: Brightness.light,
+          secondary: Colors.amber,
+        ),
       ),
       home: const Home(title: 'Splendid'),
     );
@@ -56,70 +61,126 @@ class _HomeState extends ConsumerState<Home> {
     final selectedItem = ref.watch(navigationProvider);
     final pages = ref.watch(pagesProvider);
     return Scaffold(
-      body: pages[selectedItem.index],
-      appBar: AppBar(
-        actions: [
-          SizedBox(
-            width: MediaQuery.of(context).size.width,
-            height: 40,
-            child: NavigationBarTheme(
-              data: NavigationBarThemeData(
-                indicatorColor: Colors.white.withOpacity(0.5),
-                labelTextStyle: MaterialStateProperty.all(
-                  const TextStyle(fontSize: 12, fontWeight: FontWeight.bold),
+      body: Row(children: [
+        Column(
+          children: [
+            SizedBox(
+              width: xOverflow,
+              height: MediaQuery.of(context).size.height,
+              child: RotatedBox(
+                quarterTurns: 1,
+                child: NavigationBar(
+                  animationDuration: const Duration(milliseconds: 100),
+                  labelBehavior: NavigationDestinationLabelBehavior.alwaysShow,
+                  selectedIndex: selectedItem.index,
+                  onDestinationSelected: (index) => {
+                    ref.read(navigationProvider.notifier).update(
+                        (state) => state = NavBarItem.values.elementAt(index))
+                  },
+                  destinations: const [
+                    RotatedBox(
+                      quarterTurns: 3,
+                      child: NavigationDestination(
+                        icon: Icon(Icons.space_dashboard),
+                        label: "Dashboard",
+                        tooltip: "",
+                      ),
+                    ),
+                    RotatedBox(
+                      quarterTurns: 3,
+                      child: NavigationDestination(
+                        icon: Icon(Icons.inbox),
+                        label: "Inbox",
+                        tooltip: "",
+                      ),
+                    ),
+                    RotatedBox(
+                      quarterTurns: 3,
+                      child: NavigationDestination(
+                        icon: Icon(Icons.badge),
+                        label: "Clients",
+                        tooltip: "",
+                      ),
+                    ),
+                    RotatedBox(
+                      quarterTurns: 3,
+                      child: NavigationDestination(
+                        icon: Icon(Icons.supervised_user_circle),
+                        label: "Users",
+                        tooltip: "",
+                      ),
+                    ),
+                    RotatedBox(
+                      quarterTurns: 3,
+                      child: NavigationDestination(
+                        icon: Icon(Icons.task),
+                        label: "Tasks",
+                        tooltip: "",
+                      ),
+                    ),
+                    RotatedBox(
+                      quarterTurns: 3,
+                      child: NavigationDestination(
+                        icon: Icon(Icons.content_paste),
+                        label: "Board",
+                        tooltip: "",
+                      ),
+                    ),
+                    RotatedBox(
+                      quarterTurns: 3,
+                      child: NavigationDestination(
+                        icon: Icon(Icons.shield_outlined),
+                        label: "Admin",
+                        tooltip: "",
+                      ),
+                    ),
+                    RotatedBox(
+                      quarterTurns: 3,
+                      child: NavigationDestination(
+                        icon: Icon(Icons.settings),
+                        label: "Settings",
+                        tooltip: "",
+                      ),
+                    )
+                  ],
                 ),
               ),
-              child: NavigationBar(
-                animationDuration: const Duration(seconds: 1),
-                labelBehavior: NavigationDestinationLabelBehavior.alwaysHide,
-                height: 60,
-                selectedIndex: selectedItem.index,
-                onDestinationSelected: (index) => {
-                  ref.read(navigationProvider.notifier).update(
-                      (state) => state = NavBarItem.values.elementAt(index))
-                },
-                destinations: const [
-                  NavigationDestination(
-                    icon: Icon(Icons.menu),
-                    label: "Menu",
-                    tooltip: "",
-                  ),
-                  NavigationDestination(
-                    icon: Icon(Icons.inbox),
-                    label: "Inbox",
-                    tooltip: "",
-                  ),
-                  NavigationDestination(
-                    icon: Icon(Icons.person_add),
-                    label: "Clients",
-                    tooltip: "",
-                  ),
-                  NavigationDestination(
-                    icon: Icon(Icons.person_outline),
-                    label: "Users",
-                    tooltip: "",
-                  ),
-                  NavigationDestination(
-                    icon: Icon(Icons.dashboard_customize_sharp),
-                    label: "Board",
-                    tooltip: "",
-                  ),
-                  NavigationDestination(
-                    icon: Icon(Icons.shield_outlined),
-                    label: "Administration",
-                    tooltip: "",
-                  ),
-                  NavigationDestination(
-                    icon: Icon(Icons.settings),
-                    label: "Settings",
-                    tooltip: "",
-                  )
-                ],
+            )
+          ],
+        ),
+        Column(
+          children: [
+            SizedBox(
+              width: MediaQuery.of(context).size.width - xOverflow,
+              height: yOverflow,
+              child: Padding(
+                padding: const EdgeInsets.all(10.0),
+                child: Row(
+                  children: [
+                    ElevatedButton(
+                      onPressed: () => {},
+                      child: const Icon(Icons.vertical_split),
+                    ),
+                    const SizedBox(
+                      width: 10.0,
+                    ),
+                    Text(
+                      selectedItem.name.characters.first.toUpperCase() +
+                          selectedItem.name.substring(1),
+                      style: const TextStyle(fontSize: 18),
+                    )
+                  ],
+                ),
               ),
             ),
-          )
-        ],
-      ),
+            SizedBox(
+              height: MediaQuery.of(context).size.height - yOverflow,
+              width: MediaQuery.of(context).size.width - xOverflow,
+              child: pages[selectedItem.index],
+            )
+          ],
+        )
+      ]),
     );
   }
 }

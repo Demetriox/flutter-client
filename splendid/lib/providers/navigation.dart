@@ -3,29 +3,33 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:splendid/gui/views/administration.dart';
 import 'package:splendid/gui/views/board.dart';
 import 'package:splendid/gui/views/clients.dart';
+import 'package:splendid/gui/views/dashboard.dart';
 import 'package:splendid/gui/views/inbox.dart';
-import 'package:splendid/gui/views/orders.dart';
+import 'package:splendid/gui/views/tasks.dart';
 import 'package:splendid/gui/views/settings.dart';
 import 'package:splendid/gui/views/users.dart';
 
 enum NavBarItem {
+  dashboard,
   inbox,
-  board,
   clients,
   users,
   orders,
+  board,
   administration,
   settings
 }
 
-final navigationProvider = StateProvider<NavBarItem>((ref) => NavBarItem.inbox);
+final navigationProvider =
+    StateProvider<NavBarItem>((ref) => NavBarItem.dashboard);
 final pagesProvider = StateProvider<List<Widget>>(
   (ref) => [
+    const Dashboard(),
     const Inbox(),
-    const Board(),
     const Clients(),
     const Users(),
-    const Orders(),
+    const Tasks(),
+    const Board(),
     const Administration(),
     const Settings(),
   ],
