@@ -88,7 +88,7 @@ class _HomeState extends ConsumerState<Home> {
                 child: Column(
                   children: [
                     Container(
-                      height: Platform.isMacOS ? 27 : 0,
+                      height: Platform.isMacOS ? 50 : 0,
                       color: Theme.of(context).colorScheme.background,
                       child: WindowTitleBarBox(
                         child: Expanded(child: MoveWindow()),
