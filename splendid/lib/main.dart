@@ -1,3 +1,4 @@
+import 'dart:io' show Platform;
 import 'package:bitsdojo_window/bitsdojo_window.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -83,7 +84,23 @@ class _HomeState extends ConsumerState<Home> {
             Visibility(
               visible: isSidebarVisible,
               child: SizedBox(
-                child: Sidebar(selectedItem: selectedItem, ref: ref),
+                width: 80,
+                child: Column(
+                  children: [
+                    Container(
+                      height: Platform.isMacOS ? 27 : 0,
+                      color: Theme.of(context).colorScheme.background,
+                      child: WindowTitleBarBox(
+                        child: Expanded(child: MoveWindow()),
+                      ),
+                    ),
+                    Expanded(
+                      child: SizedBox(
+                        child: Sidebar(selectedItem: selectedItem, ref: ref),
+                      ),
+                    ),
+                  ],
+                ),
               ),
             ),
             Expanded(
