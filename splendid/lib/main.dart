@@ -120,6 +120,9 @@ class _HomeState extends ConsumerState<Home> {
                                 padding: const EdgeInsets.all(10.0),
                                 child: Row(
                                   children: [
+                                    Visibility(
+                                        visible: !isSidebarVisible,
+                                        child: const SizedBox(width: 80)),
                                     TextButton(
                                       onPressed: () => setState(() {
                                         isSidebarVisible = !isSidebarVisible;
