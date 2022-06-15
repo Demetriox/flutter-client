@@ -1,16 +1,24 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:splendid/gui/widgets/global/section.dart';
 import 'package:splendid/gui/widgets/sections/new-activity.dart';
-import 'package:splendid/utils/constants.dart';
+import 'package:splendid/providers/theme.dart';
 
-class Dashboard extends StatefulWidget {
+class Dashboard extends ConsumerStatefulWidget {
   const Dashboard({Key? key}) : super(key: key);
 
   @override
-  State<Dashboard> createState() => _DashboardState();
+  ConsumerState<Dashboard> createState() => _DashboardState();
 }
 
-class _DashboardState extends State<Dashboard> {
+class _DashboardState extends ConsumerState<Dashboard> {
+  @override
+  void initState() {
+    super.initState();
+    ref.read(colorNamesProvider);
+    ref.read(themeProvider);
+  }
+
   List<Widget> list = [
     Section(
       icon: Icons.inbox,
@@ -27,6 +35,9 @@ class _DashboardState extends State<Dashboard> {
   ];
   @override
   Widget build(BuildContext context) {
+    final colorNames = ref.watch(colorNamesProvider);
+    final selectedTheme = ref.watch(themeProvider);
+
     return SizedBox(
       child: Column(
         children: [
@@ -34,7 +45,7 @@ class _DashboardState extends State<Dashboard> {
             children: [
               Expanded(
                 child: Image.network(
-                  "https://source.unsplash.com/random/?green",
+                  "https://source.unsplash.com/random/?${colorNames[selectedTheme.index]}}",
                   height: 200,
                   fit: BoxFit.cover,
                 ),

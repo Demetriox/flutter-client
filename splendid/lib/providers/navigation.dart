@@ -22,6 +22,7 @@ enum NavBarItem {
 
 final navigationProvider =
     StateProvider<NavBarItem>((ref) => NavBarItem.dashboard);
+
 final pagesProvider = StateProvider<List<Widget>>(
   (ref) => [
     const Dashboard(),

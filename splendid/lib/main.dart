@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:splendid/gui/widgets/global/sidebar.dart';
 import 'package:splendid/providers/navigation.dart';
+import 'package:splendid/providers/theme.dart';
 import 'package:splendid/utils/constants.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
@@ -27,19 +28,22 @@ void initialization(BuildContext context) async {
   dotenv.load();
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends ConsumerWidget {
   const MyApp({Key? key}) : super(key: key);
 
   // This widget is the root of your application.
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final selectedTheme = ref.watch(themeProvider);
+    final colors = ref.watch(colorsProvider);
+
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Sprint',
       theme: ThemeData(
         useMaterial3: true,
         colorScheme: ColorScheme.fromSeed(
-          seedColor: Colors.pink,
+          seedColor: colors[selectedTheme.index],
           brightness: Brightness.light,
         ),
       ),
@@ -61,6 +65,7 @@ class _HomeState extends ConsumerState<Home> {
   void initState() {
     super.initState();
     ref.read(navigationProvider);
+    ref.read(themeProvider);
   }
 
   var isSidebarVisible = true;
@@ -71,7 +76,7 @@ class _HomeState extends ConsumerState<Home> {
     final pages = ref.watch(pagesProvider);
     return Scaffold(
       body: WindowBorder(
-        color: Theme.of(context).colorScheme.primary,
+        color: Theme.of(context).colorScheme.background,
         width: 1,
         child: Row(
           children: [
@@ -81,7 +86,7 @@ class _HomeState extends ConsumerState<Home> {
                 children: [
                   SizedBox(
                     child: Container(
-                      color: Theme.of(context).colorScheme.primary,
+                      color: Theme.of(context).colorScheme.background,
                       child: Column(
                         children: [
                           WindowTitleBarBox(child: MoveWindow()),
@@ -99,16 +104,18 @@ class _HomeState extends ConsumerState<Home> {
                 child: Column(
                   children: [
                     Container(
-                      color: Theme.of(context).colorScheme.primary,
+                      color: Theme.of(context).colorScheme.background,
                       child: WindowTitleBarBox(
                         child: Row(
                           children: [
                             Expanded(child: MoveWindow()),
+                            const WindowButtons(),
                           ],
                         ),
                       ),
                     ),
-                    SizedBox(
+                    Container(
+                      color: Theme.of(context).colorScheme.background,
                       child: Padding(
                         padding: const EdgeInsets.all(10.0),
                         child: Row(
@@ -143,6 +150,53 @@ class _HomeState extends ConsumerState<Home> {
           ],
         ),
       ),
+    );
+  }
+}
+
+final buttonColors = WindowButtonColors(
+    iconNormal: const Color(0xFF805306),
+    mouseOver: const Color(0xFFF6A00C),
+    mouseDown: const Color(0xFF805306),
+    iconMouseOver: const Color(0xFF805306),
+    iconMouseDown: const Color(0xFFFFD500));
+
+final closeButtonColors = WindowButtonColors(
+    mouseOver: const Color(0xFFD32F2F),
+    mouseDown: const Color(0xFFB71C1C),
+    iconNormal: const Color(0xFF805306),
+    iconMouseOver: Colors.white);
+
+class WindowButtons extends StatefulWidget {
+  const WindowButtons({Key? key}) : super(key: key);
+
+  @override
+  _WindowButtonsState createState() => _WindowButtonsState();
+}
+
+class _WindowButtonsState extends State<WindowButtons> {
+  void maximizeOrRestore() {
+    setState(() {
+      appWindow.maximizeOrRestore();
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      children: [
+        MinimizeWindowButton(colors: buttonColors),
+        appWindow.isMaximized
+            ? RestoreWindowButton(
+                colors: buttonColors,
+                onPressed: maximizeOrRestore,
+              )
+            : MaximizeWindowButton(
+                colors: buttonColors,
+                onPressed: maximizeOrRestore,
+              ),
+        CloseWindowButton(colors: closeButtonColors),
+      ],
     );
   }
 }
