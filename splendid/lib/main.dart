@@ -15,12 +15,14 @@ void main() {
   }
   runApp(const ProviderScope(child: MyApp()));
   doWhenWindowReady(() {
-    final win = appWindow;
-    const minSize = Size(600, 450);
-    win.minSize = minSize;
-    win.alignment = Alignment.center;
-    win.title = "Sprint";
-    win.show();
+    if (!isMobile) {
+      final win = appWindow;
+      const minSize = Size(600, 450);
+      win.minSize = minSize;
+      win.alignment = Alignment.center;
+      win.title = "Sprint";
+      win.show();
+    }
   });
 }
 
@@ -76,97 +78,110 @@ class _HomeState extends ConsumerState<Home> {
     final selectedItem = ref.watch(navigationProvider);
     final pages = ref.watch(pagesProvider);
     return Scaffold(
-      body: WindowBorder(
-        color: Theme.of(context).colorScheme.background,
-        width: 1,
-        child: Row(
-          children: [
-            Visibility(
-              visible: isSidebarVisible,
-              child: SizedBox(
-                width: 80,
-                child: Column(
-                  children: [
-                    Container(
-                      height: Platform.isMacOS ? 50 : 0,
-                      color: Theme.of(context).colorScheme.background,
-                      child: WindowTitleBarBox(
-                        child: Expanded(child: MoveWindow()),
+      bottomNavigationBar: Visibility(
+        visible: isMobile,
+        child: Sidebar(selectedItem: selectedItem, ref: ref),
+      ),
+      appBar: AppBar(title: const Text("Sprint")),
+      body: isMobile
+          ? pages[selectedItem.index]
+          : WindowBorder(
+              color: Theme.of(context).colorScheme.background,
+              width: 1,
+              child: Row(
+                children: [
+                  Visibility(
+                    visible: isSidebarVisible,
+                    child: SizedBox(
+                      width: 80,
+                      child: Column(
+                        children: [
+                          Container(
+                            height: Platform.isMacOS ? 50 : 0,
+                            color: Theme.of(context).colorScheme.background,
+                            child: WindowTitleBarBox(
+                              child: Expanded(child: MoveWindow()),
+                            ),
+                          ),
+                          Expanded(
+                            child: SizedBox(
+                              child:
+                                  Sidebar(selectedItem: selectedItem, ref: ref),
+                            ),
+                          ),
+                        ],
                       ),
                     ),
-                    Expanded(
-                      child: SizedBox(
-                        child: Sidebar(selectedItem: selectedItem, ref: ref),
+                  ),
+                  Expanded(
+                    flex: 1,
+                    child: SizedBox(
+                      child: Column(
+                        children: [
+                          Container(
+                            height: 50,
+                            color: Theme.of(context).colorScheme.background,
+                            child: WindowTitleBarBox(
+                              child: Row(
+                                children: [
+                                  Container(
+                                    color: Theme.of(context)
+                                        .colorScheme
+                                        .background,
+                                    child: Padding(
+                                      padding: const EdgeInsets.all(10.0),
+                                      child: Row(
+                                        children: [
+                                          Visibility(
+                                              visible: !isSidebarVisible,
+                                              child: const SizedBox(width: 80)),
+                                          TextButton(
+                                            onPressed: () => setState(() {
+                                              isSidebarVisible =
+                                                  !isSidebarVisible;
+                                            }),
+                                            child: const Icon(
+                                                Icons.vertical_split),
+                                          ),
+                                          const SizedBox(
+                                            width: 10.0,
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                  Expanded(
+                                    child: MoveWindow(
+                                      child: Row(
+                                        children: [
+                                          Text(
+                                            selectedItem.name.characters.first
+                                                    .toUpperCase() +
+                                                selectedItem.name.substring(1),
+                                            style:
+                                                const TextStyle(fontSize: 18),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                  const WindowButtons(),
+                                ],
+                              ),
+                            ),
+                          ),
+                          Expanded(
+                            child: SizedBox(
+                              child: pages[selectedItem.index],
+                            ),
+                          )
+                        ],
                       ),
                     ),
-                  ],
-                ),
+                  )
+                ],
               ),
             ),
-            Expanded(
-              flex: 1,
-              child: SizedBox(
-                child: Column(
-                  children: [
-                    Container(
-                      height: 50,
-                      color: Theme.of(context).colorScheme.background,
-                      child: WindowTitleBarBox(
-                        child: Row(
-                          children: [
-                            Container(
-                              color: Theme.of(context).colorScheme.background,
-                              child: Padding(
-                                padding: const EdgeInsets.all(10.0),
-                                child: Row(
-                                  children: [
-                                    Visibility(
-                                        visible: !isSidebarVisible,
-                                        child: const SizedBox(width: 80)),
-                                    TextButton(
-                                      onPressed: () => setState(() {
-                                        isSidebarVisible = !isSidebarVisible;
-                                      }),
-                                      child: const Icon(Icons.vertical_split),
-                                    ),
-                                    const SizedBox(
-                                      width: 10.0,
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ),
-                            Expanded(
-                              child: MoveWindow(
-                                child: Row(
-                                  children: [
-                                    Text(
-                                      selectedItem.name.characters.first
-                                              .toUpperCase() +
-                                          selectedItem.name.substring(1),
-                                      style: const TextStyle(fontSize: 18),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ),
-                            const WindowButtons(),
-                          ],
-                        ),
-                      ),
-                    ),
-                    Expanded(
-                      child: SizedBox(
-                        child: pages[selectedItem.index],
-                      ),
-                    )
-                  ],
-                ),
-              ),
-            )
-          ],
-        ),
-      ),
     );
   }
 }

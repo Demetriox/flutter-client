@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:splendid/gui/widgets/global/section.dart';
 import 'package:splendid/gui/widgets/sections/new-activity.dart';
 import 'package:splendid/providers/theme.dart';
+import 'package:splendid/utils/constants.dart';
 
 class Dashboard extends ConsumerStatefulWidget {
   const Dashboard({Key? key}) : super(key: key);
@@ -46,7 +47,7 @@ class _DashboardState extends ConsumerState<Dashboard> {
               Expanded(
                 child: Image.network(
                   "https://source.unsplash.com/random/?${colorNames[selectedTheme.index]}}",
-                  height: 200,
+                  height: isMobile ? 0 : 200,
                   fit: BoxFit.cover,
                 ),
               )
