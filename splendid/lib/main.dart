@@ -83,7 +83,23 @@ class _HomeState extends ConsumerState<Home> {
             Visibility(
               visible: isSidebarVisible,
               child: SizedBox(
-                child: Sidebar(selectedItem: selectedItem, ref: ref),
+                width: 80,
+                child: Column(
+                  children: [
+                    Container(
+                      height: 30,
+                      color: Theme.of(context).colorScheme.background,
+                      child: WindowTitleBarBox(
+                        child: Expanded(child: MoveWindow()),
+                      ),
+                    ),
+                    Expanded(
+                      child: SizedBox(
+                        child: Sidebar(selectedItem: selectedItem, ref: ref),
+                      ),
+                    ),
+                  ],
+                ),
               ),
             ),
             Expanded(
