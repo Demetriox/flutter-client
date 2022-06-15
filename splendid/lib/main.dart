@@ -1,3 +1,4 @@
+import 'package:bitsdojo_window/bitsdojo_window.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:splendid/gui/widgets/global/sidebar.dart';
@@ -11,6 +12,14 @@ void main() {
     FlutterNativeSplash.remove();
   }
   runApp(const ProviderScope(child: MyApp()));
+  doWhenWindowReady(() {
+    final win = appWindow;
+    const minSize = Size(600, 450);
+    win.minSize = minSize;
+    win.alignment = Alignment.center;
+    win.title = "Sprint";
+    win.show();
+  });
 }
 
 void initialization(BuildContext context) async {
@@ -30,7 +39,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         useMaterial3: true,
         colorScheme: ColorScheme.fromSeed(
-          seedColor: Colors.red,
+          seedColor: Colors.green,
           brightness: Brightness.light,
         ),
       ),
@@ -61,52 +70,78 @@ class _HomeState extends ConsumerState<Home> {
     final selectedItem = ref.watch(navigationProvider);
     final pages = ref.watch(pagesProvider);
     return Scaffold(
-      body: Row(
-        children: [
-          Visibility(
-            visible: isSidebarVisible,
-            child: Column(
-              children: [Sidebar(selectedItem: selectedItem, ref: ref)],
-            ),
-          ),
-          Expanded(
-            flex: 1,
-            child: SizedBox(
+      body: WindowBorder(
+        color: Theme.of(context).colorScheme.primary,
+        width: 1,
+        child: Row(
+          children: [
+            Visibility(
+              visible: isSidebarVisible,
               child: Column(
                 children: [
                   SizedBox(
-                    child: Padding(
-                      padding: const EdgeInsets.all(10.0),
-                      child: Row(
+                    child: Container(
+                      color: Theme.of(context).colorScheme.primary,
+                      child: Column(
                         children: [
-                          TextButton(
-                            onPressed: () => setState(() {
-                              isSidebarVisible = !isSidebarVisible;
-                            }),
-                            child: const Icon(Icons.vertical_split),
-                          ),
-                          const SizedBox(
-                            width: 10.0,
-                          ),
-                          Text(
-                            selectedItem.name.characters.first.toUpperCase() +
-                                selectedItem.name.substring(1),
-                            style: const TextStyle(fontSize: 18),
-                          )
+                          WindowTitleBarBox(child: MoveWindow()),
+                          Sidebar(selectedItem: selectedItem, ref: ref)
                         ],
                       ),
                     ),
                   ),
-                  Expanded(
-                    child: SizedBox(
-                      child: pages[selectedItem.index],
-                    ),
-                  )
                 ],
               ),
             ),
-          )
-        ],
+            Expanded(
+              flex: 1,
+              child: SizedBox(
+                child: Column(
+                  children: [
+                    Container(
+                      color: Theme.of(context).colorScheme.primary,
+                      child: WindowTitleBarBox(
+                        child: Row(
+                          children: [
+                            Expanded(child: MoveWindow()),
+                          ],
+                        ),
+                      ),
+                    ),
+                    SizedBox(
+                      child: Padding(
+                        padding: const EdgeInsets.all(10.0),
+                        child: Row(
+                          children: [
+                            TextButton(
+                              onPressed: () => setState(() {
+                                isSidebarVisible = !isSidebarVisible;
+                              }),
+                              child: const Icon(Icons.vertical_split),
+                            ),
+                            const SizedBox(
+                              width: 10.0,
+                            ),
+                            Text(
+                              selectedItem.name.characters.first.toUpperCase() +
+                                  selectedItem.name.substring(1),
+                              style: const TextStyle(fontSize: 18),
+                            )
+                          ],
+                        ),
+                      ),
+                    ),
+                    Expanded(
+                      child: SizedBox(
+                        child: pages[selectedItem.index],
+                      ),
+                    )
+                  ],
+                ),
+              ),
+            )
+          ],
+        ),
       ),
     );
   }

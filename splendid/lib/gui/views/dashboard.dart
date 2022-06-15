@@ -34,7 +34,7 @@ class _DashboardState extends State<Dashboard> {
             children: [
               Expanded(
                 child: Image.network(
-                  "https://source.unsplash.com/random/?pink",
+                  "https://source.unsplash.com/random/?green",
                   height: 200,
                   fit: BoxFit.cover,
                 ),
