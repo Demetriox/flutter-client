@@ -109,36 +109,45 @@ class _HomeState extends ConsumerState<Home> {
                 child: Column(
                   children: [
                     Container(
+                      height: 50,
                       color: Theme.of(context).colorScheme.background,
                       child: WindowTitleBarBox(
                         child: Row(
                           children: [
-                            Expanded(child: MoveWindow()),
+                            Container(
+                              color: Theme.of(context).colorScheme.background,
+                              child: Padding(
+                                padding: const EdgeInsets.all(10.0),
+                                child: Row(
+                                  children: [
+                                    TextButton(
+                                      onPressed: () => setState(() {
+                                        isSidebarVisible = !isSidebarVisible;
+                                      }),
+                                      child: const Icon(Icons.vertical_split),
+                                    ),
+                                    const SizedBox(
+                                      width: 10.0,
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                            Expanded(
+                              child: MoveWindow(
+                                child: Row(
+                                  children: [
+                                    Text(
+                                      selectedItem.name.characters.first
+                                              .toUpperCase() +
+                                          selectedItem.name.substring(1),
+                                      style: const TextStyle(fontSize: 18),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
                             const WindowButtons(),
-                          ],
-                        ),
-                      ),
-                    ),
-                    Container(
-                      color: Theme.of(context).colorScheme.background,
-                      child: Padding(
-                        padding: const EdgeInsets.all(10.0),
-                        child: Row(
-                          children: [
-                            TextButton(
-                              onPressed: () => setState(() {
-                                isSidebarVisible = !isSidebarVisible;
-                              }),
-                              child: const Icon(Icons.vertical_split),
-                            ),
-                            const SizedBox(
-                              width: 10.0,
-                            ),
-                            Text(
-                              selectedItem.name.characters.first.toUpperCase() +
-                                  selectedItem.name.substring(1),
-                              style: const TextStyle(fontSize: 18),
-                            )
                           ],
                         ),
                       ),
@@ -160,16 +169,16 @@ class _HomeState extends ConsumerState<Home> {
 }
 
 final buttonColors = WindowButtonColors(
-    iconNormal: const Color(0xFF805306),
-    mouseOver: const Color(0xFFF6A00C),
-    mouseDown: const Color(0xFF805306),
-    iconMouseOver: const Color(0xFF805306),
-    iconMouseDown: const Color(0xFFFFD500));
+    iconNormal: const Color(0xFF000000),
+    mouseOver: const Color(0xFFe9e9e9),
+    mouseDown: const Color.fromARGB(255, 241, 240, 240),
+    iconMouseOver: const Color(0xFF000000),
+    iconMouseDown: const Color(0xFF000000));
 
 final closeButtonColors = WindowButtonColors(
     mouseOver: const Color(0xFFD32F2F),
     mouseDown: const Color(0xFFB71C1C),
-    iconNormal: const Color(0xFF805306),
+    iconNormal: const Color(0xFF000000),
     iconMouseOver: Colors.white);
 
 class WindowButtons extends StatefulWidget {
