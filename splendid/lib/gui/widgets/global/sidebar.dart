@@ -16,6 +16,7 @@ class Sidebar extends StatelessWidget {
   Widget build(BuildContext context) {
     return SizedBox(
       width: 80,
+      height: MediaQuery.of(context).size.height - 34,
       child: RotatedBox(
         quarterTurns: 1,
         child: NavigationBar(

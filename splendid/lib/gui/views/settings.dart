@@ -37,6 +37,7 @@ class _SettingsState extends ConsumerState<Settings> {
                     shrinkWrap: true,
                     children: [
                       ExpansionTileCard(
+                        initiallyExpanded: true,
                         expandedTextColor:
                             Theme.of(context).colorScheme.primary,
                         leading: const Icon(Icons.color_lens),
