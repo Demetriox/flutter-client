@@ -1,3 +1,4 @@
+import 'dart:io' show Platform;
 import 'package:bitsdojo_window/bitsdojo_window.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -87,7 +88,7 @@ class _HomeState extends ConsumerState<Home> {
                 child: Column(
                   children: [
                     Container(
-                      height: 30,
+                      height: Platform.isMacOS ? 27 : 0,
                       color: Theme.of(context).colorScheme.background,
                       child: WindowTitleBarBox(
                         child: Expanded(child: MoveWindow()),
