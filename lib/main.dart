@@ -82,7 +82,7 @@ class _HomeState extends ConsumerState<Home> {
         visible: isMobile,
         child: Sidebar(selectedItem: selectedItem, ref: ref),
       ),
-      appBar: AppBar(title: const Text("Sprint")),
+      appBar: isMobile ? AppBar(title: const Text("Sprint")) : null,
       body: isMobile
           ? pages[selectedItem.index]
           : WindowBorder(
