@@ -1,7 +1,10 @@
-import 'package:flutter/cupertino.dart';
+import 'package:boardview/board_item.dart';
+import 'package:boardview/board_list.dart';
+import 'package:boardview/boardview_controller.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/foundation/key.dart';
-import 'package:flutter/src/widgets/framework.dart';
+import 'package:boardview/boardview.dart';
+import 'package:sprint/constants/BoardItemObject.dart';
+import 'package:sprint/constants/BoardListObject.dart';
 
 class Board extends StatefulWidget {
   const Board({Key? key}) : super(key: key);
@@ -11,55 +14,75 @@ class Board extends StatefulWidget {
 }
 
 class _BoardState extends State<Board> {
+  final List<BoardListObject> _listData = [
+    BoardListObject(title: "List title 1"),
+    BoardListObject(title: "List title 2"),
+    BoardListObject(title: "List title 3")
+  ];
+
+  //Can be used to animate to different sections of the BoardView
+  BoardViewController boardViewController = BoardViewController();
+
   @override
   Widget build(BuildContext context) {
-    return Row(
-      children: [
-        Padding(
-          padding: const EdgeInsets.all(20.0),
-          child: SizedBox(
-            width: 300,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                const Text(
-                  "Unassigned",
-                  style: TextStyle(fontSize: 18),
-                ),
-                Expanded(
-                  child: SizedBox(
-                    child: Card(
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(15.0),
-                      ),
-                      child: ListView(children: [
-                        Padding(
-                          padding: const EdgeInsets.all(10.0),
-                          child: SizedBox(
-                            height: 100,
-                            child: Card(
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(15.0),
-                              ),
-                              child: const Padding(
-                                padding: EdgeInsets.all(10.0),
-                                child: Text(
-                                  "Title of the task.",
-                                  style: TextStyle(fontSize: 18),
-                                ),
-                              ),
-                            ),
-                          ),
-                        )
-                      ]),
-                    ),
-                  ),
-                ),
-              ],
-            ),
+    List<BoardList> lists = [];
+    for (int i = 0; i < _listData.length; i++) {
+      lists.add(_createBoardList(_listData[i]) as BoardList);
+    }
+    return BoardView(
+      lists: lists,
+      boardViewController: boardViewController,
+    );
+  }
+
+  Widget buildBoardItem(BoardItemObject itemObject) {
+    return BoardItem(
+        onStartDragItem:
+            (int? listIndex, int? itemIndex, BoardItemState? state) {},
+        onDropItem: (int? listIndex, int? itemIndex, int? oldListIndex,
+            int? oldItemIndex, BoardItemState? state) {
+          //Used to update our local item data
+          var item = _listData[oldListIndex!].items![oldItemIndex!];
+          _listData[oldListIndex].items!.removeAt(oldItemIndex!);
+          _listData[listIndex!].items!.insert(itemIndex!, item);
+        },
+        onTapItem:
+            (int? listIndex, int? itemIndex, BoardItemState? state) async {},
+        item: Card(
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Text(itemObject.title!),
           ),
-        )
+        ));
+  }
+
+  Widget _createBoardList(BoardListObject list) {
+    List<BoardItem> items = [];
+    for (int i = 0; i < list.items!.length; i++) {
+      items.insert(i, buildBoardItem(list.items![i]) as BoardItem);
+    }
+
+    return BoardList(
+      onStartDragList: (int? listIndex) {},
+      onTapList: (int? listIndex) async {},
+      onDropList: (int? listIndex, int? oldListIndex) {
+        //Update our local list data
+        var list = _listData[oldListIndex!];
+        _listData.removeAt(oldListIndex);
+        _listData.insert(listIndex!, list);
+      },
+      headerBackgroundColor: const Color.fromARGB(255, 235, 236, 240),
+      backgroundColor: const Color.fromARGB(255, 235, 236, 240),
+      header: [
+        Expanded(
+            child: Padding(
+                padding: const EdgeInsets.all(5),
+                child: Text(
+                  list.title!,
+                  style: const TextStyle(fontSize: 20),
+                ))),
       ],
+      items: items,
     );
   }
 }

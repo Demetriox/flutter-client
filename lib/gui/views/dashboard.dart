@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:sprint/gui/widgets/global/section.dart';
@@ -45,12 +46,18 @@ class _DashboardState extends ConsumerState<Dashboard> {
           Row(
             children: [
               Expanded(
-                child: Image.network(
-                  "https://source.unsplash.com/random/?${colorNames[selectedTheme.index]}}",
+                child: CachedNetworkImage(
                   height: isMobile ? 0 : 200,
                   fit: BoxFit.cover,
+                  progressIndicatorBuilder: (context, url, progress) => Center(
+                    child: CircularProgressIndicator(
+                      value: progress.progress,
+                    ),
+                  ),
+                  imageUrl:
+                      "https://source.unsplash.com/random/?${colorNames[selectedTheme.index]}}",
                 ),
-              )
+              ),
             ],
           ),
           Expanded(
