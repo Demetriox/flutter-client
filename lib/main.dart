@@ -37,6 +37,7 @@ class MyApp extends ConsumerWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final selectedColorScheme = ref.watch(colorSchemeProvider);
     final selectedTheme = ref.watch(themeProvider);
     final colors = ref.watch(colorsProvider);
 
@@ -46,8 +47,8 @@ class MyApp extends ConsumerWidget {
       theme: ThemeData(
         useMaterial3: true,
         colorScheme: ColorScheme.fromSeed(
-          seedColor: colors[selectedTheme.index],
-          brightness: Brightness.light,
+          seedColor: colors[selectedColorScheme.index],
+          brightness: selectedTheme,
         ),
       ),
       home: const Home(title: 'Sprint'),
@@ -100,7 +101,7 @@ class _HomeState extends ConsumerState<Home> {
                             height: Platform.isMacOS ? 50 : 0,
                             color: Theme.of(context).colorScheme.background,
                             child: WindowTitleBarBox(
-                              child: Expanded(child: MoveWindow()),
+                              child: MoveWindow(),
                             ),
                           ),
                           Expanded(

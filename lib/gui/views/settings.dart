@@ -15,7 +15,7 @@ class _SettingsState extends ConsumerState<Settings> {
   @override
   void initState() {
     super.initState();
-    ref.read(themeProvider);
+    ref.read(colorSchemeProvider);
   }
 
   @override
@@ -62,9 +62,9 @@ class _SettingsState extends ConsumerState<Settings> {
                                       borderRadius: 22,
                                       color: Colors.blue,
                                       onSelect: () => ref
-                                          .read(themeProvider.notifier)
+                                          .read(colorSchemeProvider.notifier)
                                           .update((state) =>
-                                              state = ThemeColor.blue),
+                                              state = AppColorScheme.blue),
                                     ),
                                     const SizedBox(width: 5),
                                     ColorIndicator(
@@ -73,9 +73,9 @@ class _SettingsState extends ConsumerState<Settings> {
                                       borderRadius: 22,
                                       color: Colors.red,
                                       onSelect: () => ref
-                                          .read(themeProvider.notifier)
+                                          .read(colorSchemeProvider.notifier)
                                           .update((state) =>
-                                              state = ThemeColor.red),
+                                              state = AppColorScheme.red),
                                     ),
                                     const SizedBox(width: 5),
                                     ColorIndicator(
@@ -84,9 +84,9 @@ class _SettingsState extends ConsumerState<Settings> {
                                       borderRadius: 22,
                                       color: Colors.pink,
                                       onSelect: () => ref
-                                          .read(themeProvider.notifier)
+                                          .read(colorSchemeProvider.notifier)
                                           .update((state) =>
-                                              state = ThemeColor.pink),
+                                              state = AppColorScheme.pink),
                                     ),
                                     const SizedBox(width: 5),
                                     ColorIndicator(
@@ -95,9 +95,9 @@ class _SettingsState extends ConsumerState<Settings> {
                                       borderRadius: 22,
                                       color: Colors.yellow,
                                       onSelect: () => ref
-                                          .read(themeProvider.notifier)
+                                          .read(colorSchemeProvider.notifier)
                                           .update((state) =>
-                                              state = ThemeColor.yellow),
+                                              state = AppColorScheme.yellow),
                                     ),
                                     const SizedBox(width: 5),
                                     ColorIndicator(
@@ -106,9 +106,9 @@ class _SettingsState extends ConsumerState<Settings> {
                                       borderRadius: 22,
                                       color: Colors.green,
                                       onSelect: () => ref
-                                          .read(themeProvider.notifier)
+                                          .read(colorSchemeProvider.notifier)
                                           .update((state) =>
-                                              state = ThemeColor.green),
+                                              state = AppColorScheme.green),
                                     ),
                                     const SizedBox(width: 5),
                                     ColorIndicator(
@@ -117,9 +117,9 @@ class _SettingsState extends ConsumerState<Settings> {
                                       borderRadius: 22,
                                       color: Colors.purple,
                                       onSelect: () => ref
-                                          .read(themeProvider.notifier)
+                                          .read(colorSchemeProvider.notifier)
                                           .update((state) =>
-                                              state = ThemeColor.purple),
+                                              state = AppColorScheme.purple),
                                     ),
                                   ],
                                 ),
@@ -131,6 +131,25 @@ class _SettingsState extends ConsumerState<Settings> {
                                     Theme.of(context).colorScheme.secondary,
                                 leading: const Icon(Icons.nightlight),
                                 title: const Text("Theme"),
+                                trailing: Wrap(
+                                  children: [
+                                    ElevatedButton(
+                                      onPressed: () => ref
+                                          .read(themeProvider.notifier)
+                                          .update((state) =>
+                                              state = Brightness.light),
+                                      child: const Icon(Icons.sunny),
+                                    ),
+                                    const SizedBox(width: 10),
+                                    ElevatedButton(
+                                      onPressed: () => ref
+                                          .read(themeProvider.notifier)
+                                          .update((state) =>
+                                              state = Brightness.dark),
+                                      child: const Icon(Icons.nightlight),
+                                    )
+                                  ],
+                                ),
                               )
                             ],
                           )

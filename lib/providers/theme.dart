@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-enum ThemeColor { blue, red, pink, yellow, green, purple }
+enum AppColorScheme { blue, red, pink, yellow, green, purple }
 
-final themeProvider = StateProvider<ThemeColor>((ref) => ThemeColor.blue);
+final colorSchemeProvider =
+    StateProvider<AppColorScheme>((ref) => AppColorScheme.blue);
+
+final themeProvider = StateProvider<Brightness>((ref) => Brightness.light);
 
 final colorsProvider = StateProvider<List<Color>>(
   (ref) => [

@@ -38,7 +38,7 @@ class _DashboardState extends ConsumerState<Dashboard> {
   @override
   Widget build(BuildContext context) {
     final colorNames = ref.watch(colorNamesProvider);
-    final selectedTheme = ref.watch(themeProvider);
+    final selectedColor = ref.watch(colorSchemeProvider);
 
     return SizedBox(
       child: Column(
@@ -55,7 +55,7 @@ class _DashboardState extends ConsumerState<Dashboard> {
                     ),
                   ),
                   imageUrl:
-                      "https://source.unsplash.com/random/?${colorNames[selectedTheme.index]}}",
+                      "https://source.unsplash.com/random/?${colorNames[selectedColor.index]}}",
                 ),
               ),
             ],
