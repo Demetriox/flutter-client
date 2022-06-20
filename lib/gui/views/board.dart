@@ -43,7 +43,7 @@ class _BoardState extends State<Board> {
             int? oldItemIndex, BoardItemState? state) {
           //Used to update our local item data
           var item = _listData[oldListIndex!].items![oldItemIndex!];
-          _listData[oldListIndex].items!.removeAt(oldItemIndex!);
+          _listData[oldListIndex].items!.removeAt(oldItemIndex);
           _listData[listIndex!].items!.insert(itemIndex!, item);
         },
         onTapItem:
