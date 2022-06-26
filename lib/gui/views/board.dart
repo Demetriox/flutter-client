@@ -3,8 +3,9 @@ import 'package:boardview/board_list.dart';
 import 'package:boardview/boardview_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:boardview/boardview.dart';
-import 'package:sprint/constants/BoardItemObject.dart';
-import 'package:sprint/constants/BoardListObject.dart';
+import 'package:sprint/constants/text_constants.dart';
+import 'package:sprint/gui/widgets/BoardItemObject.dart';
+import 'package:sprint/gui/widgets/BoardListObject.dart';
 
 class Board extends StatefulWidget {
   const Board({Key? key}) : super(key: key);
@@ -15,9 +16,12 @@ class Board extends StatefulWidget {
 
 class _BoardState extends State<Board> {
   final List<BoardListObject> _listData = [
-    BoardListObject(title: "List title 1"),
+    BoardListObject(title: "List title 1", items: [
+      BoardItemObject(title: 'Perro'),
+      BoardItemObject(title: 'Gato'),
+      BoardItemObject(title: 'Huron')
+    ]),
     BoardListObject(title: "List title 2"),
-    BoardListObject(title: "List title 3")
   ];
 
   //Can be used to animate to different sections of the BoardView
@@ -35,27 +39,7 @@ class _BoardState extends State<Board> {
     );
   }
 
-  Widget buildBoardItem(BoardItemObject itemObject) {
-    return BoardItem(
-        onStartDragItem:
-            (int? listIndex, int? itemIndex, BoardItemState? state) {},
-        onDropItem: (int? listIndex, int? itemIndex, int? oldListIndex,
-            int? oldItemIndex, BoardItemState? state) {
-          //Used to update our local item data
-          var item = _listData[oldListIndex!].items![oldItemIndex!];
-          _listData[oldListIndex].items!.removeAt(oldItemIndex);
-          _listData[listIndex!].items!.insert(itemIndex!, item);
-        },
-        onTapItem:
-            (int? listIndex, int? itemIndex, BoardItemState? state) async {},
-        item: Card(
-          child: Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Text(itemObject.title!),
-          ),
-        ));
-  }
-
+// Create board list.
   Widget _createBoardList(BoardListObject list) {
     List<BoardItem> items = [];
     for (int i = 0; i < list.items!.length; i++) {
@@ -84,5 +68,47 @@ class _BoardState extends State<Board> {
       ],
       items: items,
     );
+  }
+
+  //Build board Item
+  Widget buildBoardItem(BoardItemObject itemObject) {
+    final myController = TextEditingController();
+
+    return BoardItem(
+        onStartDragItem:
+            (int? listIndex, int? itemIndex, BoardItemState? state) {},
+        onDropItem: (int? listIndex, int? itemIndex, int? oldListIndex,
+            int? oldItemIndex, BoardItemState? state) {
+          //Used to update our local item data
+          var item = _listData[oldListIndex!].items![oldItemIndex!];
+          _listData[oldListIndex].items!.removeAt(oldItemIndex);
+          _listData[listIndex!].items!.insert(itemIndex!, item);
+        },
+        onTapItem:
+            (int? listIndex, int? itemIndex, BoardItemState? state) async {},
+        item: Card(
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: EditableText(
+              autofocus: true,
+              maxLines: null,
+              backgroundCursorColor: Colors.amber,
+              cursorColor: Colors.green,
+              style: textStyleTitleSearch,
+              focusNode: FocusNode(),
+              controller: myController,
+              onChanged: (val) {
+                if (myController.text.isEmpty) {
+                  setState(() {
+                    if (_listData[0].items!.isNotEmpty) {
+                      _listData
+                          .removeWhere((element) => element.items!.isEmpty);
+                    }
+                  });
+                } // myController.text = val;
+              },
+            ),
+          ),
+        ));
   }
 }
