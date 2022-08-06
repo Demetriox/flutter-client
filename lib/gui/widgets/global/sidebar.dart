@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:sprint/providers/navigation.dart';
-import 'package:sprint/utils/constants.dart';
 
-class Sidebar extends StatelessWidget {
+class Sidebar extends StatefulWidget {
   const Sidebar({
     Key? key,
     required this.selectedItem,
@@ -14,85 +13,65 @@ class Sidebar extends StatelessWidget {
   final WidgetRef ref;
 
   @override
+  State<Sidebar> createState() => _SidebarState();
+}
+
+class _SidebarState extends State<Sidebar> {
+  var isSidebarExtended = true;
+  @override
   Widget build(BuildContext context) {
-    return RotatedBox(
-      quarterTurns: isMobile ? 0 : 1,
-      child: NavigationBar(
-        animationDuration: const Duration(milliseconds: 100),
-        labelBehavior: NavigationDestinationLabelBehavior.alwaysShow,
-        selectedIndex: selectedItem.index,
-        onDestinationSelected: (index) => {
-          ref
-              .read(navigationProvider.notifier)
-              .update((state) => state = NavBarItem.values.elementAt(index))
-        },
-        destinations: [
-          RotatedBox(
-            quarterTurns: isMobile ? 4 : 3,
-            child: const NavigationDestination(
-              icon: Icon(Icons.space_dashboard),
-              label: "Dashboard",
-              tooltip: "",
-            ),
-          ),
-          RotatedBox(
-            quarterTurns: isMobile ? 4 : 3,
-            child: const NavigationDestination(
-              icon: Icon(Icons.inbox),
-              label: "Inbox",
-              tooltip: "",
-            ),
-          ),
-          RotatedBox(
-            quarterTurns: isMobile ? 4 : 3,
-            child: const NavigationDestination(
-              icon: Icon(Icons.badge),
-              label: "Clients",
-              tooltip: "",
-            ),
-          ),
-          RotatedBox(
-            quarterTurns: isMobile ? 4 : 3,
-            child: const NavigationDestination(
-              icon: Icon(Icons.supervised_user_circle),
-              label: "Users",
-              tooltip: "",
-            ),
-          ),
-          RotatedBox(
-            quarterTurns: isMobile ? 4 : 3,
-            child: const NavigationDestination(
-              icon: Icon(Icons.task),
-              label: "Tasks",
-              tooltip: "",
-            ),
-          ),
-          RotatedBox(
-            quarterTurns: isMobile ? 4 : 3,
-            child: const NavigationDestination(
-              icon: Icon(Icons.content_paste),
-              label: "Board",
-              tooltip: "",
-            ),
-          ),
-          RotatedBox(
-            quarterTurns: isMobile ? 4 : 3,
-            child: const NavigationDestination(
-              icon: Icon(Icons.shield_outlined),
-              label: "Admin",
-              tooltip: "",
-            ),
-          ),
-          RotatedBox(
-            quarterTurns: isMobile ? 4 : 3,
-            child: const NavigationDestination(
-              icon: Icon(Icons.settings),
-              label: "Settings",
-              tooltip: "",
-            ),
-          )
-        ],
-      ),
+    return NavigationRail(
+      onDestinationSelected: (index) => {
+        widget.ref
+            .read(navigationProvider.notifier)
+            .update((state) => state = NavBarItem.values.elementAt(index))
+      },
+      leading: ElevatedButton(
+          onPressed: () => setState(() {
+                isSidebarExtended = !isSidebarExtended;
+              }),
+          child: isSidebarExtended
+              ? const Icon(Icons.arrow_back)
+              : const Icon(Icons.arrow_forward)),
+      destinations: const [
+        NavigationRailDestination(
+          icon: Icon(Icons.space_dashboard),
+          label: Text("Dashboard"),
+        ),
+        NavigationRailDestination(
+          icon: Icon(Icons.inbox),
+          label: Text("Inbox"),
+        ),
+        NavigationRailDestination(
+          icon: Icon(Icons.badge),
+          label: Text("Clients"),
+        ),
+        NavigationRailDestination(
+          icon: Icon(Icons.supervised_user_circle),
+          label: Text("Users"),
+        ),
+        NavigationRailDestination(
+          icon: Icon(Icons.task),
+          label: Text("Tasks"),
+        ),
+        NavigationRailDestination(
+          icon: Icon(Icons.content_paste),
+          label: Text("Board"),
+        ),
+        NavigationRailDestination(
+          icon: Icon(Icons.shield_outlined),
+          label: Text("Admin"),
+        ),
+        NavigationRailDestination(
+          icon: Icon(Icons.settings),
+          label: Text("Settings"),
+        ),
+      ],
+      minExtendedWidth: 230,
+      labelType: NavigationRailLabelType.none,
+      selectedIndex: widget.selectedItem.index,
+      useIndicator: true,
+      extended: isSidebarExtended,
     );
   }
 }

@@ -83,7 +83,7 @@ class _HomeState extends ConsumerState<Home> {
         visible: isMobile,
         child: Sidebar(selectedItem: selectedItem, ref: ref),
       ),
-      appBar: isMobile ? AppBar(title: const Text("Sprint")) : null,
+      appBar: isMobile ? AppBar(title: const Text("Flowboard")) : null,
       body: isMobile
           ? pages[selectedItem.index]
           : WindowBorder(
@@ -93,26 +93,7 @@ class _HomeState extends ConsumerState<Home> {
                 children: [
                   Visibility(
                     visible: isSidebarVisible,
-                    child: SizedBox(
-                      width: 80,
-                      child: Column(
-                        children: [
-                          Container(
-                            height: Platform.isMacOS ? 50 : 0,
-                            color: Theme.of(context).colorScheme.background,
-                            child: WindowTitleBarBox(
-                              child: MoveWindow(),
-                            ),
-                          ),
-                          Expanded(
-                            child: SizedBox(
-                              child:
-                                  Sidebar(selectedItem: selectedItem, ref: ref),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
+                    child: Sidebar(selectedItem: selectedItem, ref: ref),
                   ),
                   Expanded(
                     flex: 1,
@@ -125,32 +106,6 @@ class _HomeState extends ConsumerState<Home> {
                             child: WindowTitleBarBox(
                               child: Row(
                                 children: [
-                                  Container(
-                                    color: Theme.of(context)
-                                        .colorScheme
-                                        .background,
-                                    child: Padding(
-                                      padding: const EdgeInsets.all(10.0),
-                                      child: Row(
-                                        children: [
-                                          Visibility(
-                                              visible: !isSidebarVisible,
-                                              child: const SizedBox(width: 80)),
-                                          TextButton(
-                                            onPressed: () => setState(() {
-                                              isSidebarVisible =
-                                                  !isSidebarVisible;
-                                            }),
-                                            child: const Icon(
-                                                Icons.vertical_split),
-                                          ),
-                                          const SizedBox(
-                                            width: 10.0,
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                  ),
                                   Expanded(
                                     child: MoveWindow(
                                       child: Row(
