@@ -39,22 +39,6 @@ class _SidebarState extends State<Sidebar> {
           label: Text("Dashboard"),
         ),
         NavigationRailDestination(
-          icon: Icon(Icons.inbox),
-          label: Text("Inbox"),
-        ),
-        NavigationRailDestination(
-          icon: Icon(Icons.badge),
-          label: Text("Clients"),
-        ),
-        NavigationRailDestination(
-          icon: Icon(Icons.supervised_user_circle),
-          label: Text("Users"),
-        ),
-        NavigationRailDestination(
-          icon: Icon(Icons.task),
-          label: Text("Tasks"),
-        ),
-        NavigationRailDestination(
           icon: Icon(Icons.content_paste),
           label: Text("Board"),
         ),

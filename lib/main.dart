@@ -121,6 +121,9 @@ class _HomeState extends ConsumerState<Home> {
                                       ),
                                     ),
                                   ),
+                                  ElevatedButton(
+                                      onPressed: () => {},
+                                      child: const Icon(Icons.notifications)),
                                   const WindowButtons(),
                                 ],
                               ),
